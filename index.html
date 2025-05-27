@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>翻頁動畫</title>
+  <style>
+    body {
+      margin: 0;
+      background: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .book {
+      position: relative;
+      display: flex;
+      width: 100vw;
+      max-width: 1000px;
+      height: 600px;
+      perspective: 2000px;
+      overflow: hidden;
+      gap: 0px;
+    }
+
+    .page {
+      position: relative;
+      width: 50%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 1s ease;
+      /* 柔和的中間陰影與立體感 */
+      /* 左頁在右側產生向內漸層陰影，右頁在左側產生向內漸層陰影 */
+    }
+
+    .page.left {
+      /* 左頁：右側內陰影 */
+      box-shadow: inset -16px 0 32px -16px rgba(0,0,0,0.22), 0 2px 16px 0 rgba(0,0,0,0.10);
+    }
+    .page.right {
+      /* 右頁：左側內陰影 */
+      box-shadow: inset 16px 0 32px -16px rgba(0,0,0,0.22), 0 2px 16px 0 rgba(0,0,0,0.10);
+    }
+
+    .left, .right {
+      padding: 20px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: auto auto;
+      row-gap: 60px;
+      column-gap: 0px;
+      width: 100%;
+      height: 100%;
+      justify-items: center;
+      align-items: start;
+      align-content: center;
+      padding-left: 0px;
+      padding-right: 0px;
+      padding-top: 0px;
+      padding-bottom: 0px;
+      margin-top: -20px;
+    }
+
+    .stamp-card {
+      width: 200px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+    .like-container {
+      margin-top: 4px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #444;
+      width: 100%;
+      padding-right: 8px;
+    }
+
+    .like-count {
+      font-family: "Arial", "Helvetica", "黑體-繁", sans-serif;
+      position: relative;
+      top: 1.5px;
+    }
+
+    .like-btn {
+      background: none;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 2px 4px;
+      user-select: none;
+    }
+
+    .heart-icon {
+      width: 14px;
+      height: 14px;
+      vertical-align: middle;
+    }
+
+    .stamped {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .left {
+      z-index: 1;
+    }
+
+    .right {
+      transform-origin: left;
+      z-index: 2;
+    }
+
+    .right.flipped {
+      transform: rotateY(-180deg);
+      z-index: 0;
+    }
+
+    .btn {
+      position: absolute;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      color: black;
+      border-radius: 8px;
+      user-select: none;
+      z-index: 10;
+      box-shadow: none;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .left-btn {
+      position: absolute;
+      left: 25%;
+      bottom: 40px;
+      transform: translateX(-50%);
+      background: none;
+      border: none;
+      color: rgb(160, 0, 0);
+      font-weight: bold;
+      font-size: 14px;
+      border-radius: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .right-btn {
+      position: absolute;
+      right: 25%;
+      bottom: 40px;
+      transform: translateX(50%);
+      background: none;
+      border: none;
+      color: rgb(159, 0, 0);
+      font-weight: bold;
+      font-size: 14px;
+      border-radius: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .left-btn .arrow,
+    .right-btn .arrow {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .headline {
+      position: absolute;
+      top: 24px;
+      left: 12px;
+      font-size: 7px;
+      font-weight: bold;
+      font-family: "Arial", "Helvetica", "黑體-繁", sans-serif;
+      color: black;
+      z-index: 5;
+      letter-spacing: 0.5px;
+      pointer-events: none;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+    }
+    .headline-icon {
+      height: 14px;
+      vertical-align: baseline;
+      display: inline-block;
+    }
+    .headline-icon.right {
+      height: 10px;
+      margin-left: 16px;
+    }
+    .headline-icon.left {
+      height: 20px;
+    }
+    .corner-icon {
+      position: absolute;
+      bottom: 75px;
+      left: 40px;
+      height: 52px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .center-bottom-icon {
+      position: absolute;
+      bottom: 75px;
+      left: 40px;
+      height: 28px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .logo-stamped {
+      position: absolute;
+      bottom: 75px;
+      right: 40px;
+      height: 28px;
+      z-index: 10;
+      pointer-events: none;
+    }
+  </style>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCR9FJ2vz8-2hwK3CObOUDKM3lWcHsDfIQ",
+      authDomain: "touch-gallery-71383.firebaseapp.com",
+      projectId: "touch-gallery-71383",
+      storageBucket: "touch-gallery-71383.appspot.com",
+      messagingSenderId: "716558645289",
+      appId: "1:716558645289:web:df819fc86de7a3050b0438",
+      measurementId: "G-YP67MYT3Y0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let imageUrls = [];
+    let pageIndex = 0;
+
+    // 使用 onSnapshot 監聽 Firestore 資料變動，確保圖片新增時自動更新
+    document.addEventListener("DOMContentLoaded", () => {
+      db.collection("images").onSnapshot(snapshot => {
+        imageUrls = snapshot.docs
+          .map(doc => doc.data().url)
+          .filter(url => typeof url === "string" && url.startsWith("http"));
+        console.log("目前讀取圖片：", imageUrls);
+        updatePage();
+      });
+    });
+
+    function createCard(imageUrl) {
+      const card = document.createElement("div");
+      card.className = "stamp-card";
+      if (imageUrl) {
+        const img = document.createElement("img");
+        img.src = imageUrl;
+        img.alt = "stamp";
+        img.className = "stamped";
+        card.appendChild(img);
+      }
+      return card;
+    }
+
+    function wrapCardWithLike(card, imageUrl) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "card-wrapper";
+      wrapper.style.display = "flex";
+      wrapper.style.flexDirection = "column";
+      wrapper.style.alignItems = "center";
+
+      const likeContainer = document.createElement("div");
+      likeContainer.className = "like-container";
+
+      const likeBtn = document.createElement("button");
+      likeBtn.className = "like-btn";
+      likeBtn.innerHTML = '<img src="heart.png" alt="heart" class="heart-icon">';
+
+      const likeCount = document.createElement("span");
+      likeCount.className = "like-count";
+      likeCount.textContent = "0";
+
+      // 從 Firestore 讀取讚數
+      db.collection("likes").doc(encodeURIComponent(imageUrl)).get().then(doc => {
+        if (doc.exists && typeof doc.data().count === "number") {
+          likeCount.textContent = doc.data().count;
+        }
+      });
+
+      likeBtn.addEventListener("click", () => {
+        const newCount = parseInt(likeCount.textContent) + 1;
+        likeCount.textContent = newCount;
+
+        db.collection("likes").doc(encodeURIComponent(imageUrl)).set({ count: newCount });
+      });
+
+      likeContainer.appendChild(likeBtn);
+      likeContainer.appendChild(likeCount);
+
+      wrapper.appendChild(card);
+      wrapper.appendChild(likeContainer);
+      return wrapper;
+    }
+
+    function updatePage() {
+      const left = document.querySelector(".page.left");
+      const right = document.querySelector(".page.right");
+
+      // 清除左頁內容（卡片、標題、角落圖示、包裹卡片的容器）
+      [".grid-container", ".headline", ".corner-icon", ".card-wrapper"].forEach(selector => {
+        left.querySelectorAll(selector).forEach(el => el.remove());
+      });
+
+      // 徹底重建右頁：只移除現有 grid 容器
+      const existingRightGrid = right.querySelector(".grid-container");
+      if (existingRightGrid) right.removeChild(existingRightGrid);
+
+      left.style.backgroundImage = `url("left.jpg")`;
+      right.style.backgroundImage = `url("right.jpg")`;
+
+      const leftGrid = document.createElement("div");
+      leftGrid.className = "grid-container";
+      for (let i = 0; i < 4; i++) {
+        const leftIndex = pageIndex * 8 + i;
+        if (leftIndex < imageUrls.length) {
+          leftGrid.appendChild(wrapCardWithLike(createCard(imageUrls[leftIndex]), imageUrls[leftIndex]));
+        }
+      }
+
+      const headline = document.createElement("div");
+      headline.className = "headline";
+      headline.innerHTML = `<img src="title-stamp.png" alt="stamp" class="headline-icon left">WHAT WAS YOUR CHILDHOOD DREAM? &nbsp;&nbsp; LET US HELP YOU ACHIEVE IT.<img src="ped.png" alt="ped" class="headline-icon right">`;
+      left.appendChild(headline);
+
+      const corner = document.createElement("img");
+      corner.src = "corner-icon.png";
+      corner.className = "corner-icon";
+
+      left.appendChild(leftGrid);
+      left.appendChild(corner);
+
+      // 重新建立右頁 grid
+      const rightGrid = document.createElement("div");
+      rightGrid.className = "grid-container";
+
+      for (let i = 0; i < 4; i++) {
+        const rightIndex = pageIndex * 8 + 4 + i;
+        const card = (rightIndex < imageUrls.length)
+          ? wrapCardWithLike(createCard(imageUrls[rightIndex]), imageUrls[rightIndex])
+          : document.createElement("div");
+        card.classList.add("empty-card");
+        rightGrid.appendChild(card);
+      }
+      right.appendChild(rightGrid);
+
+      // 插入固定元件
+      const centerBottom = document.createElement("img");
+      centerBottom.src = "center-bottom-icon.png";
+      centerBottom.className = "center-bottom-icon";
+      right.appendChild(centerBottom);
+
+      const logo = document.createElement("img");
+      logo.src = "logo-stamped.png";
+      logo.className = "logo-stamped";
+      right.appendChild(logo);
+    }
+
+    function flipNext() {
+      const maxPages = Math.ceil(imageUrls.length / 8);
+      if (pageIndex < maxPages - 1) {
+        pageIndex++;
+        updatePage();
+      }
+    }
+
+    function flipBack() {
+      if (pageIndex > 0) {
+        pageIndex--;
+        updatePage();
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="book">
+    <div class="page left"></div>
+    <div class="page right" id="rightPage"></div>
+    <button class="btn left-btn" onclick="flipBack()"><div class="arrow">◀</div><div>Slide</div></button>
+    <button class="btn right-btn" onclick="flipNext()"><div class="arrow">▶</div><div>Slide</div></button>
+  </div>
+</body>
+</html>
