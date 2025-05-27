@@ -18,19 +18,24 @@
       display: flex;
       width: 100vw;
       max-width: 1000px;
+      min-width: 1000px;
       height: 600px;
       perspective: 2000px;
       overflow: hidden;
       gap: 0px;
-      min-width: 800px; /* ✅ Added fixed min-width for consistent left-right width */
+    }
+
+    .page.left,
+    .page.right {
+      width: 50%;
+      min-width: 500px;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
     }
 
     .page {
       position: relative;
-      width: 50%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
       transition: transform 1s ease;
       /* 柔和的中間陰影與立體感 */
       /* 左頁在右側產生向內漸層陰影，右頁在左側產生向內漸層陰影 */
@@ -43,6 +48,7 @@
     .page.right {
       /* 右頁：左側內陰影 */
       box-shadow: inset 16px 0 32px -16px rgba(0,0,0,0.22), 0 2px 16px 0 rgba(0,0,0,0.10);
+      min-height: 600px;
     }
 
     .left, .right {
@@ -57,18 +63,20 @@
       grid-template-rows: auto auto;
       row-gap: 60px;
       column-gap: 20px;
-      gap: 20px;
+      gap: 10px;
       width: 100%;
       height: 100%;
       min-height: 500px;
       justify-items: center;
-      align-items: start;
+      align-items: center;
       align-content: center;
       padding-left: 0px;
       padding-right: 0px;
       padding-top: 0px;
       padding-bottom: 0px;
       margin-top: -20px;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     .stamp-card {
@@ -177,7 +185,7 @@
 
     .right-btn {
       position: absolute;
-      left: 68%;
+      left: 66%;
       bottom: 40px;
       transform: translateX(-50%);
       background: none;
