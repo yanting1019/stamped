@@ -245,6 +245,55 @@
       z-index: 10;
       pointer-events: none;
     }
+
+    @media (max-width: 768px) {
+      body {
+        display: block;
+        height: auto;
+        background: #222;
+        overflow-x: hidden;
+      }
+
+      .book {
+        display: block;
+        width: 100vw;
+        max-width: 100%;
+        height: auto;
+        perspective: none;
+      }
+
+      .page.left,
+      .page.right {
+        width: 100%;
+        height: auto;
+        box-shadow: none;
+        padding: 12px;
+      }
+
+      .grid-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 40px;
+        padding: 0;
+        margin-top: 0;
+      }
+
+      .stamp-card {
+        width: 90%;
+        max-width: 320px;
+        height: auto;
+        aspect-ratio: 4 / 3;
+      }
+
+      .btn,
+      .corner-icon,
+      .center-bottom-icon,
+      .logo-stamped,
+      .headline {
+        display: none !important;
+      }
+    }
   </style>
   
   <!-- Firebase SDK -->
@@ -392,6 +441,16 @@
       logo.src = "logo-stamped.png";
       logo.className = "logo-stamped";
       right.appendChild(logo);
+
+      // 額外為手機產生全部卡片
+      const mobileContainer = document.getElementById("mobile-container");
+      if (window.innerWidth <= 768 && mobileContainer) {
+        mobileContainer.innerHTML = "";
+        imageUrls.forEach(url => {
+          const wrapped = wrapCardWithLike(createCard(url), url);
+          mobileContainer.appendChild(wrapped);
+        });
+      }
     }
 
     function flipNext() {
@@ -414,8 +473,7 @@
   <div class="book">
     <div class="page left"></div>
     <div class="page right" id="rightPage"></div>
-    <button class="btn left-btn" onclick="flipBack()"><div class="arrow">◀</div><div>Slide</div></button>
-    <button class="btn right-btn" onclick="flipNext()"><div class="arrow">▶</div><div>Slide</div></button>
+    <div id="mobile-container" class="page"></div>
   </div>
 </body>
 </html>
