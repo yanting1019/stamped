@@ -307,9 +307,6 @@
         display: none !important;
       }
 
-      .btn {
-        display: none !important;
-      }
     }
   </style>
   
@@ -494,14 +491,19 @@
     <div class="page left"></div>
     <div class="page right" id="rightPage"></div>
     <div id="mobile-container" class="page"></div>
+    <button class="btn left-btn" onclick="flipBack()">
+      <span class="arrow">▲</span>
+      SLIDE
+    </button>
+    <button class="btn right-btn" onclick="flipNext()">
+      <span class="arrow">▲</span>
+      SLIDE
+    </button>
   </div>
-  <button class="btn left-btn" onclick="flipBack()">
-    <span class="arrow">▲</span>
-    SLIDE
-  </button>
-  <button class="btn right-btn" onclick="flipNext()">
-    <span class="arrow">▲</span>
-    SLIDE
-  </button>
 </body>
 </html>
+  @media (min-width: 769px) {
+    .btn {
+      display: block;
+    }
+  }
