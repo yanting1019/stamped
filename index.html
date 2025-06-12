@@ -634,6 +634,7 @@
       overlayToggle.style.padding = "0";
       overlayToggle.style.textDecoration = "none";
 
+      // 展開留言按鈕只會開啟 popup，不再展開卡片下方留言
       overlayToggle.addEventListener("click", () => {
         const existing = document.getElementById("message-overlay");
         if (existing) existing.remove();
@@ -713,14 +714,18 @@
         document.body.appendChild(overlay);
       });
 
-      wrapper.appendChild(overlayToggle);
-
+      // 只保留 textarea 與送出按鈕在卡片下方
       const messageInputArea = document.createElement("div");
       messageInputArea.className = "message-input-area";
       messageInputArea.style.flexDirection = "row-reverse";
       messageInputArea.style.justifyContent = "space-between";
       messageInputArea.style.alignItems = "flex-end";
       messageInputArea.style.width = "100%";
+
+      // 留言框
+      const textarea = document.createElement("textarea");
+      textarea.id = `message-input-${encodeURIComponent(imageUrl)}`;
+      textarea.placeholder = "寫下你的留言...";
 
       // 送出按鈕
       const sendBtn = document.createElement("button");
@@ -736,24 +741,13 @@
       sendBtn.onmouseover = () => sendBtn.style.backgroundColor = "#666";
       sendBtn.onmouseout = () => sendBtn.style.backgroundColor = "gray";
 
-      // 留言框
-      const textarea = document.createElement("textarea");
-      textarea.id = `message-input-${encodeURIComponent(imageUrl)}`;
-      textarea.placeholder = "寫下你的留言...";
-
-      // 展開留言按鈕樣式已於前方設置
-
-      // 插入順序：textarea（上），展開留言在左，送出在右
-      const buttonRow = document.createElement("div");
-      buttonRow.style.display = "flex";
-      buttonRow.style.justifyContent = "flex-end";
-      buttonRow.style.width = "100%";
-      buttonRow.appendChild(overlayToggle);
-      buttonRow.appendChild(sendBtn);
-
+      // 插入順序：textarea（上），送出按鈕在右
       messageInputArea.appendChild(textarea);
+      messageInputArea.appendChild(sendBtn);
       wrapper.appendChild(messageInputArea);
-      wrapper.appendChild(buttonRow);
+
+      // 展開留言按鈕獨立顯示於下方（不再在 buttonRow）
+      wrapper.appendChild(overlayToggle);
 
       // 不再自動載入留言顯示在卡片下方
       // ===========================
