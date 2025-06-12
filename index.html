@@ -420,6 +420,28 @@
       .headline {
         display: none !important;
       }
+      /* === 手機版留言區 popup 樣式 === */
+      #message-overlay > div {
+        width: 90% !important;
+        padding: 16px !important;
+      }
+
+      #message-overlay > div > div.message-box {
+        max-height: 160px;
+        overflow-y: auto;
+      }
+
+      #message-overlay > div::after {
+        content: "";
+        position: absolute;
+        right: 20px;
+        bottom: -14px;
+        width: 0;
+        height: 0;
+        border-right: 12px solid white;
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+      }
     }
     @media (min-width: 769px) {
       .book {
