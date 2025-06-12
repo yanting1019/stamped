@@ -386,8 +386,13 @@
       }
 
       #mobile-container .message-input-area {
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: flex-end;
+        gap: 8px;
         padding: 0 12px;
         width: 100%;
+        display: flex;
       }
 
       #mobile-container .message-input-area textarea {
@@ -397,10 +402,12 @@
         color: #333;
         border-radius: 4px;
         padding: 4px;
+        flex: 1;
       }
 
       #mobile-container .message-input-area button {
         margin-top: 6px;
+        flex-shrink: 0;
       }
 
       .stamped {
@@ -848,7 +855,8 @@
     }
     // ====== 留言功能 ======
     async function sendMessage(stampId) {
-      const input = document.querySelector(`#message-input-${CSS.escape(stampId)}`);
+      const input = document.querySelector(`#message-input-${encodeURIComponent(stampId)}`);
+      console.log("抓到的輸入框是：", input);
       const message = input ? input.value.trim() : "";
       if (message === "") return;
       console.log("即將送出留言：", message);
