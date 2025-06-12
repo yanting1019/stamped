@@ -16,20 +16,42 @@
     .book {
       position: relative;
       display: flex;
-      width: 100vw;
-      max-width: 1000px;
-      min-width: 1000px;
+      width: 960px;
+      min-width: unset;
+      max-width: unset;
       height: 600px;
       perspective: 2000px;
       overflow: hidden;
       gap: 0px;
+      margin: 0 auto;
+    }
+    .book::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15));
+      z-index: 5;
+      pointer-events: none;
+      filter: blur(1px);
     }
 
     .page.left,
     .page.right {
-      width: 50%;
-      min-width: 500px;
+      box-shadow: inset 0 0 32px -16px rgba(0,0,0,0.22), 0 2px 16px 0 rgba(0,0,0,0.10);
       height: 100%;
+      width: 50%;
+      box-sizing: border-box;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      flex-grow: 0;
       background-size: cover;
       background-position: center;
     }
@@ -42,13 +64,8 @@
     }
 
     .page.left {
-      /* 左頁：右側內陰影 */
-      box-shadow: inset -16px 0 32px -16px rgba(0,0,0,0.22), 0 2px 16px 0 rgba(0,0,0,0.10);
     }
     .page.right {
-      /* 右頁：左側內陰影 */
-      box-shadow: inset 16px 0 32px -16px rgba(0,0,0,0.22), 0 2px 16px 0 rgba(0,0,0,0.10);
-      min-height: 600px;
     }
 
     .left, .right {
@@ -61,26 +78,15 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: auto auto;
-      row-gap: 60px;
-      column-gap: 20px;
-      gap: 10px;
+      gap: 16px;
       width: 100%;
-      height: 100%;
-      min-height: 500px;
       justify-items: center;
       align-items: center;
-      align-content: center;
-      padding-left: 0px;
-      padding-right: 0px;
-      padding-top: 0px;
-      padding-bottom: 0px;
-      margin-top: -20px;
-      box-sizing: border-box;
-      overflow: hidden;
     }
 
     .stamp-card {
-      width: 200px;
+      width: 90%;
+      max-width: 300px;
       height: 100%;
       background: rgba(255, 255, 255, 0.5);
       border-radius: 12px;
@@ -102,6 +108,65 @@
       color: #444;
       width: 100%;
       padding-right: 8px;
+    }
+
+    .message-box {
+      display: block;
+      background: none;
+      border: none;
+      box-shadow: none;
+      margin-top: 8px;
+      max-height: 180px;
+      overflow-y: auto;
+      font-size: 12px;
+      line-height: 1.4;
+      overflow-x: auto;
+      min-height: 100px;
+    }
+
+    .message-box p {
+      display: block;
+      margin: 4px 0;
+      margin-right: 12px;
+      font-family: "黑體-繁", "Microsoft JhengHei", sans-serif !important;
+    }
+
+    .message-input-area {
+      margin-top: 0px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .message-input-area textarea {
+      resize: none;
+      height: 28px;
+      padding: 5px;
+      border: none;
+      background: none;
+      outline: none;
+      font-size: 12px;
+      font-family: 'Courier New', monospace;
+      color: #222;
+      box-shadow: none;
+      text-align: left;
+      line-height: 1.2;
+      overflow-y: hidden;
+    }
+
+    .message-input-area button {
+      margin-top: -2px;
+      padding: 4px 10px;
+      border: none;
+      background-color: gray;
+      color: white;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .message-input-area button:hover {
+      background-color: #666666;
     }
 
     .like-count {
@@ -153,7 +218,7 @@
       cursor: pointer;
       font-size: 18px;
       font-weight: bold;
-      color: black;
+      color: #de5419;
       border-radius: 8px;
       user-select: none;
       z-index: 10;
@@ -165,14 +230,14 @@
       background: rgba(255, 255, 255, 1);
     }
 
-    .left-btn {
+    .btn.left-btn {
       position: absolute;
       left: 25%;
       bottom: 40px;
       transform: translateX(-50%);
       background: none;
       border: none;
-      color: rgb(160, 0, 0);
+      color: #de5419;
       font-weight: bold;
       font-size: 14px;
       border-radius: 0;
@@ -183,14 +248,14 @@
       gap: 4px;
     }
 
-    .right-btn {
+    .btn.right-btn {
       position: absolute;
-      left: 66%;
+      left: 75%;
       bottom: 40px;
       transform: translateX(-50%);
       background: none;
       border: none;
-      color: rgb(159, 0, 0);
+      color: #de5419;
       font-weight: bold;
       font-size: 14px;
       border-radius: 0;
@@ -205,6 +270,7 @@
     .right-btn .arrow {
       font-size: 18px;
       line-height: 1;
+      color: #de5419;
     }
     .headline {
       position: absolute;
@@ -235,7 +301,7 @@
     }
     .corner-icon {
       position: absolute;
-      bottom: 75px;
+      bottom: 40px;
       left: 40px;
       height: 52px;
       z-index: 10;
@@ -243,7 +309,7 @@
     }
     .center-bottom-icon {
       position: absolute;
-      bottom: 75px;
+      bottom: 40px;
       left: 40px;
       height: 28px;
       z-index: 10;
@@ -251,9 +317,9 @@
     }
     .logo-stamped {
       position: absolute;
-      bottom: 75px;
+      bottom: 40px;
       right: 40px;
-      height: 28px;
+      height: 22px;
       z-index: 10;
       pointer-events: none;
     }
@@ -267,11 +333,11 @@
       }
 
       .book {
+        display: none;
+      }
+
+      #mobile-container {
         display: block;
-        width: 100vw;
-        max-width: 100%;
-        height: auto;
-        perspective: none;
       }
 
       .page.left,
@@ -286,23 +352,54 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        row-gap: 40px;
-        padding: 0;
+        row-gap: 12px;
+        padding: 24px 16px;
         margin: 0;
+        width: 100%;
+        box-sizing: border-box;
       }
 
-      .stamp-card {
+      /* 新增：優化手機版卡片與留言區、互動按鈕 */
+      #mobile-container .card-wrapper {
+        margin-bottom: 16px;
+        width: 100%;
+      }
+
+      #mobile-container .stamp-card {
         width: 100%;
         max-width: 100%;
-        height: auto;
         border-radius: 0;
         box-shadow: none;
+        background: white;
+      }
+
+      #mobile-container .like-container {
+        justify-content: flex-end;
+        padding: 4px 8px;
+      }
+
+      #mobile-container .message-input-area {
+        padding: 0 12px;
+        width: 100%;
+      }
+
+      #mobile-container .message-input-area textarea {
+        width: 100%;
+        border: 1px solid #ccc;
+        background: #f9f9f9;
+        color: #333;
+        border-radius: 4px;
+        padding: 4px;
+      }
+
+      #mobile-container .message-input-area button {
+        margin-top: 6px;
       }
 
       .stamped {
         width: 100%;
         height: auto;
-        object-fit: contain;
+        object-fit: cover;
         border-radius: 0;
       }
 
@@ -317,8 +414,23 @@
       .headline {
         display: none !important;
       }
-
     }
+    @media (min-width: 769px) {
+      .book {
+        display: flex;
+      }
+      #mobile-container {
+        display: none;
+      }
+    }
+
+    /* 隱藏所有 checkbox 元件 */
+    input[type="checkbox"] {
+      display: none !important;
+    }
+    .card-wrapper > div:empty {
+  display: none !important;
+}
   </style>
   
   <!-- Firebase SDK -->
@@ -360,6 +472,63 @@
         img.src = imageUrl;
         img.alt = "stamp";
         img.className = "stamped";
+        // 新增：圖片點擊放大功能
+        img.style.cursor = "pointer";
+        img.addEventListener("click", () => {
+          const existing = document.getElementById("popup-image-modal");
+          if (existing) {
+            existing.remove();
+            const existingOverlay = document.getElementById("popup-overlay");
+            if (existingOverlay) existingOverlay.remove();
+            return;
+          }
+
+          // 新增背景遮罩
+          const overlay = document.createElement("div");
+          overlay.id = "popup-overlay";
+          overlay.style.position = "fixed";
+          overlay.style.top = "0";
+          overlay.style.left = "0";
+          overlay.style.width = "100%";
+          overlay.style.height = "100%";
+          overlay.style.background = "rgba(0, 0, 0, 0.4)";
+          overlay.style.zIndex = "999";
+          overlay.addEventListener("click", () => {
+            modal.remove();
+            overlay.remove();
+          });
+          document.body.appendChild(overlay);
+
+          const modal = document.createElement("div");
+          modal.id = "popup-image-modal";
+          modal.style.position = "absolute";
+          modal.style.top = "50%";
+          modal.style.left = "50%";
+          modal.style.transform = "translate(-50%, -50%)";
+          // 修改：確保背景透明，無邊框與陰影
+          modal.style.background = "transparent";
+          modal.style.border = "none";
+          modal.style.boxShadow = "none";
+          modal.style.borderRadius = "0";
+          modal.style.padding = "0";
+          modal.style.zIndex = "1000";
+
+          const fullImg = document.createElement("img");
+          fullImg.src = imageUrl;
+          fullImg.style.maxWidth = "98%";
+          fullImg.style.maxHeight = "98%";
+          fullImg.style.borderRadius = "0";
+          fullImg.style.boxShadow = "none";
+          fullImg.style.objectFit = "contain";
+
+          modal.appendChild(fullImg);
+          modal.addEventListener("click", () => {
+            modal.remove();
+            overlay.remove();
+          });
+
+          document.body.appendChild(modal);
+        });
         card.appendChild(img);
       }
       return card;
@@ -393,7 +562,6 @@
       likeBtn.addEventListener("click", () => {
         const newCount = parseInt(likeCount.textContent) + 1;
         likeCount.textContent = newCount;
-
         db.collection("likes").doc(encodeURIComponent(imageUrl)).set({ count: newCount });
       });
 
@@ -402,6 +570,169 @@
 
       wrapper.appendChild(card);
       wrapper.appendChild(likeContainer);
+      // 清除空白區塊（常見是無用的圓角白框）
+      Array.from(wrapper.querySelectorAll('div')).forEach(el => {
+        if (
+          el.children.length === 0 &&
+          el.textContent.trim() === "" &&
+          getComputedStyle(el).backgroundColor === 'rgba(255, 255, 255, 0.6)'
+        ) {
+          el.remove();
+        }
+      });
+      // 更嚴格地移除未知的浮動 div（白色圓角或高度 28px）
+      Array.from(wrapper.querySelectorAll('div')).forEach(el => {
+        const style = getComputedStyle(el);
+        if (
+          el.children.length === 0 &&
+          el.textContent.trim() === "" &&
+          (style.backgroundColor === 'rgba(255, 255, 255, 0.6)' || style.borderRadius === '100px' || style.height === '28px')
+        ) {
+          el.remove();
+        }
+      });
+
+      // ======= 插入留言區域 =======
+      // 建立透明展開按鈕
+      const overlayToggle = document.createElement("button");
+      overlayToggle.textContent = "展開留言";
+      overlayToggle.style.background = "none";
+      overlayToggle.style.border = "none";
+      overlayToggle.style.color = "#888";
+      overlayToggle.style.cursor = "pointer";
+      overlayToggle.style.fontSize = "12px";
+      overlayToggle.style.marginTop = "6px";
+      overlayToggle.style.alignSelf = "center";
+      overlayToggle.style.padding = "0";
+      overlayToggle.style.textDecoration = "none";
+
+      overlayToggle.addEventListener("click", () => {
+        const existing = document.getElementById("message-overlay");
+        if (existing) existing.remove();
+
+        const overlay = document.createElement("div");
+        overlay.id = "message-overlay";
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100vw";
+        overlay.style.height = "100vh";
+        overlay.style.background = "rgba(0,0,0,0.6)";
+        overlay.style.zIndex = "999";
+        overlay.addEventListener("click", () => overlay.remove());
+
+        const popup = document.createElement("div");
+        popup.style.position = "absolute";
+        popup.style.top = "50%";
+        popup.style.left = "50%";
+        popup.style.transform = "translate(-50%, -50%)";
+        popup.style.background = "white";
+        popup.style.borderRadius = "8px";
+        popup.style.padding = "20px";
+        popup.style.width = "35%";
+        popup.style.maxWidth = "600px";
+        popup.style.boxShadow = "0 4px 20px rgba(0,0,0,0.3)";
+        popup.style.maxHeight = "none";
+        popup.style.position = "relative"; // 加入相對定位，供三角形定位
+        popup.addEventListener("click", e => e.stopPropagation());
+
+        // 在 popup 下方右側加入白色三角形尖角（右傾斜）
+        const triangle = document.createElement("div");
+        triangle.style.position = "absolute";
+        triangle.style.width = "0";
+        triangle.style.height = "0";
+        triangle.style.borderRight = "14px solid white";
+        triangle.style.borderTop = "14px solid transparent";
+        triangle.style.borderBottom = "14px solid transparent";
+        triangle.style.borderLeft = "none";
+        triangle.style.right = "12px"; // 可以微調位置
+        triangle.style.bottom = "-14px";
+        popup.appendChild(triangle);
+
+        // 新增「留言區」標題
+        const messageTitle = document.createElement("div");
+        messageTitle.textContent = "留言區";
+        messageTitle.style.fontWeight = "bold";
+        messageTitle.style.fontSize = "16px";
+        messageTitle.style.marginBottom = "12px";
+        messageTitle.style.fontFamily = '"黑體-繁", "Microsoft JhengHei", sans-serif';
+        popup.appendChild(messageTitle);
+
+        // 建立留言顯示區塊
+        const popupMessages = document.createElement("div");
+        popupMessages.className = "message-box";
+        popupMessages.style.display = "block";
+        popupMessages.style.whiteSpace = "normal";
+
+        // 載入 Firestore 的留言並顯示
+        db.collection("messages")
+          .where("stampId", "==", encodeURIComponent(imageUrl))
+          .orderBy("timestamp", "asc")
+          .get()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              const data = doc.data();
+              const p = document.createElement("p");
+              p.textContent = data.content;
+              p.style.margin = "4px 0";
+              p.style.fontFamily = '"黑體-繁", "Microsoft JhengHei", sans-serif';
+              popupMessages.appendChild(p);
+            });
+          });
+
+        popup.appendChild(popupMessages);
+        overlay.appendChild(popup);
+        document.body.appendChild(overlay);
+      });
+
+      wrapper.appendChild(overlayToggle);
+
+      const messageInputArea = document.createElement("div");
+      messageInputArea.className = "message-input-area";
+      messageInputArea.style.flexDirection = "row-reverse";
+      messageInputArea.style.justifyContent = "space-between";
+      messageInputArea.style.alignItems = "flex-end";
+      messageInputArea.style.width = "100%";
+
+      // 送出按鈕
+      const sendBtn = document.createElement("button");
+      sendBtn.textContent = "送出";
+      sendBtn.onclick = () => sendMessage(encodeURIComponent(imageUrl));
+      sendBtn.style.backgroundColor = "gray";
+      sendBtn.style.color = "white";
+      sendBtn.style.borderRadius = "6px";
+      sendBtn.style.fontSize = "12px";
+      sendBtn.style.padding = "4px 10px";
+      sendBtn.style.marginLeft = "8px";
+      sendBtn.style.cursor = "pointer";
+      sendBtn.onmouseover = () => sendBtn.style.backgroundColor = "#666";
+      sendBtn.onmouseout = () => sendBtn.style.backgroundColor = "gray";
+
+      // 留言框
+      const textarea = document.createElement("textarea");
+      textarea.id = `message-input-${encodeURIComponent(imageUrl)}`;
+      textarea.placeholder = "寫下你的留言...";
+
+      // 展開留言按鈕樣式已於前方設置
+
+      // 插入順序：textarea（上），展開留言在左，送出在右
+      const buttonRow = document.createElement("div");
+      buttonRow.style.display = "flex";
+      buttonRow.style.justifyContent = "flex-end";
+      buttonRow.style.width = "100%";
+      buttonRow.appendChild(overlayToggle);
+      buttonRow.appendChild(sendBtn);
+
+      messageInputArea.appendChild(textarea);
+      wrapper.appendChild(messageInputArea);
+      wrapper.appendChild(buttonRow);
+
+      // 不再自動載入留言顯示在卡片下方
+      // ===========================
+
+      // 移除 wrapper 內所有 input[type="checkbox"]（若有被動態加入）
+      Array.from(wrapper.querySelectorAll('input[type="checkbox"]')).forEach(el => el.remove());
+
       return wrapper;
     }
 
@@ -472,11 +803,8 @@
       if (window.innerWidth <= 768 && mobileContainer) {
         mobileContainer.innerHTML = "";
         imageUrls.forEach(url => {
-          const container = document.createElement("div");
-          container.className = "grid-container";
           const wrapped = wrapCardWithLike(createCard(url), url);
-          container.appendChild(wrapped);
-          mobileContainer.appendChild(container);
+          mobileContainer.appendChild(wrapped);
         });
       }
     }
@@ -495,13 +823,65 @@
         updatePage();
       }
     }
+    // ====== 留言功能 ======
+    async function sendMessage(stampId) {
+      const input = document.querySelector(`#message-input-${CSS.escape(stampId)}`);
+      const message = input ? input.value.trim() : "";
+      if (message === "") return;
+      console.log("即將送出留言：", message);
+
+      try {
+        await db.collection("messages").add({
+          stampId: stampId,
+          content: message,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        console.log("留言已成功送出");
+        if (input) {
+          input.blur();
+          input.value = "";
+        }
+        // 不再立即將新留言顯示在主頁面卡片下方的留言區
+        // 不再呼叫 loadMessages(stampId);
+      } catch (err) {
+        console.error("送出留言失敗：", err);
+        alert("送出留言失敗：" + err.message);
+      }
+    }
+
+    async function loadMessages(stampId) {
+      const containerId = `message-list-${stampId}`;
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      try {
+        const snapshot = await db.collection("messages")
+          .where("stampId", "==", stampId)
+          .orderBy("timestamp", "asc")
+          .get();
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const p = document.createElement("p");
+          p.textContent = data.content;
+          p.style.background = "none";
+          p.style.padding = "0";
+          container.appendChild(p);
+        });
+      } catch (err) {
+        console.error("載入留言失敗：", err);
+      }
+    }
+    // ======================
   </script>
 </head>
 <body>
+  <audio id="bg-music" src="Tokyo Music Walker - Gentle Midnight - Tokyo Music Walker.mp3" autoplay loop></audio>
   <div class="book">
     <div class="page left"></div>
     <div class="page right" id="rightPage"></div>
-    <div id="mobile-container" class="page"></div>
     <button class="btn left-btn" onclick="flipBack()">
       <span class="arrow">◀</span>
       SLIDE
@@ -511,5 +891,16 @@
       SLIDE
     </button>
   </div>
+  <div id="mobile-container" class="page"></div>
 </body>
+<script>
+  document.addEventListener('click', () => {
+    const music = document.getElementById('bg-music');
+    if (music && music.paused) {
+      music.play().catch(e => {
+        console.log('音樂播放失敗：', e);
+      });
+    }
+  }, { once: true });
+</script>
 </html>
