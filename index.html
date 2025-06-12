@@ -126,6 +126,8 @@
       line-height: 1.4;
       overflow-x: auto;
       min-height: 100px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .message-box p {
@@ -138,7 +140,8 @@
     .message-input-area {
       margin-top: 0px;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      justify-content: flex-end;
       align-items: flex-end;
     }
 
@@ -156,17 +159,20 @@
       text-align: left;
       line-height: 1.2;
       overflow-y: hidden;
+      flex: 1;
     }
 
     .message-input-area button {
-      margin-top: -2px;
+      margin-left: 8px;
+      margin-top: 0;
       padding: 4px 10px;
-      border: none;
       background-color: gray;
       color: white;
+      border: none;
       border-radius: 6px;
       font-size: 12px;
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     .message-input-area button:hover {
@@ -328,129 +334,6 @@
       pointer-events: none;
     }
 
-    @media (max-width: 768px) {
-      body {
-        display: block;
-        height: auto;
-        background: #222;
-        overflow-x: hidden;
-      }
-
-      .book {
-        display: none;
-      }
-
-      #mobile-container {
-        display: block;
-      }
-
-      .page.left,
-      .page.right,
-      #mobile-container {
-        width: 100%;
-        padding: 0;
-        background: none;
-      }
-
-      .grid-container {
-        display: flex;
-        flex-direction: column;
-        padding: 24px 16px;
-        margin: 0;
-        width: 100%;
-        box-sizing: border-box;
-        gap: 24px;
-      }
-
-      /* 新增：優化手機版卡片與留言區、互動按鈕 */
-      #mobile-container .card-wrapper {
-        display: block;
-        width: 100%;
-        margin-bottom: 32px;
-        padding: 0 12px;
-      }
-
-      #mobile-container .stamp-card {
-        width: 100%;
-        max-width: 100%;
-        border-radius: 0;
-        box-shadow: none;
-        background: white;
-        height: auto;
-        margin: 0 auto;
-      }
-
-      #mobile-container .like-container {
-        justify-content: flex-end;
-        padding: 4px 8px;
-      }
-
-      #mobile-container .message-input-area {
-        flex-direction: row;
-        justify-content: flex-end;
-        align-items: flex-end;
-        gap: 8px;
-        padding: 0 12px;
-        width: 100%;
-        display: flex;
-      }
-
-      #mobile-container .message-input-area textarea {
-        width: 100%;
-        border: 1px solid #ccc;
-        background: #f9f9f9;
-        color: #333;
-        border-radius: 4px;
-        padding: 4px;
-        flex: 1;
-      }
-
-      #mobile-container .message-input-area button {
-        margin-top: 6px;
-        flex-shrink: 0;
-      }
-
-      .stamped {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        border-radius: 0;
-      }
-
-      .like-container {
-        justify-content: flex-start;
-        padding-left: 12px;
-      }
-
-      .corner-icon,
-      .center-bottom-icon,
-      .logo-stamped,
-      .headline {
-        display: none !important;
-      }
-      /* === 手機版留言區 popup 樣式 === */
-      #message-overlay > div {
-        width: 90% !important;
-        padding: 16px !important;
-      }
-
-      #message-overlay > div > div.message-box {
-        max-height: 160px;
-        overflow-y: auto;
-      }
-
-      #message-overlay > div::after {
-        content: "";
-        position: absolute;
-        right: 20px;
-        bottom: -14px;
-        width: 0;
-        height: 0;
-        border-right: 12px solid white;
-        border-top: 12px solid transparent;
-        border-bottom: 12px solid transparent;
-      }
-    }
     @media (min-width: 769px) {
       .book {
         display: flex;
@@ -641,6 +524,8 @@
       overlayToggle.style.alignSelf = "center";
       overlayToggle.style.padding = "0";
       overlayToggle.style.textDecoration = "none";
+      // 新增：加上 data-url 屬性
+      overlayToggle.setAttribute("data-url", encodeURIComponent(imageUrl));
 
       // 展開留言按鈕只會開啟 popup，不再展開卡片下方留言
       overlayToggle.addEventListener("click", () => {
@@ -659,10 +544,17 @@
         overlay.addEventListener("click", () => overlay.remove());
 
         const popup = document.createElement("div");
+        // 強制留言區置中
         popup.style.position = "absolute";
-        popup.style.top = "50%";
         popup.style.left = "50%";
+        popup.style.top = "50%";
         popup.style.transform = "translate(-50%, -50%)";
+        // 移除干擾定位的 right/bottom/margin
+        // popup.style.right = ""; // 不設
+        // popup.style.bottom = ""; // 不設
+        // popup.style.marginLeft = ""; // 不設
+        // popup.style.marginRight = ""; // 不設
+        popup.style.margin = "0 auto";
         popup.style.background = "white";
         popup.style.borderRadius = "8px";
         popup.style.padding = "20px";
@@ -670,7 +562,8 @@
         popup.style.maxWidth = "600px";
         popup.style.boxShadow = "0 4px 20px rgba(0,0,0,0.3)";
         popup.style.maxHeight = "none";
-        popup.style.position = "relative"; // 加入相對定位，供三角形定位
+        // 供三角形定位
+        popup.style.position = "absolute";
         popup.addEventListener("click", e => e.stopPropagation());
 
         // 在 popup 下方右側加入白色三角形尖角（右傾斜）
@@ -700,6 +593,8 @@
         popupMessages.className = "message-box";
         popupMessages.style.display = "block";
         popupMessages.style.whiteSpace = "normal";
+        popupMessages.style.marginLeft = "auto";
+        popupMessages.style.marginRight = "auto";
 
         // 載入 Firestore 的留言並顯示
         db.collection("messages")
@@ -871,6 +766,17 @@
         if (input) {
           input.blur();
           input.value = "";
+        }
+        // 新增：留言送出後關閉原 popup 並自動重新展開留言刷新
+        const overlay = document.getElementById("message-overlay");
+        if (overlay) {
+          overlay.remove(); // 關閉原本的 popup
+          const reopenBtn = document.querySelector(`[data-url="${stampId}"]`);
+          if (reopenBtn) {
+            setTimeout(() => {
+              reopenBtn.click();
+            }, 300); // 延遲 300ms 確保資料已寫入並可讀取
+          }
         }
         // 不再立即將新留言顯示在主頁面卡片下方的留言區
         // 不再呼叫 loadMessages(stampId);
