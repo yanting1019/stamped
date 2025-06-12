@@ -13,6 +13,13 @@
       height: 100vh;
     }
 
+    /* 確保手機頁面可自由捲動 */
+    html, body {
+      height: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
     .book {
       position: relative;
       display: flex;
@@ -63,11 +70,7 @@
       /* 左頁在右側產生向內漸層陰影，右頁在左側產生向內漸層陰影 */
     }
 
-    .page.left {
-    }
-    .page.right {
-    }
-
+    
     .left, .right {
       padding: 20px;
       background-size: cover;
@@ -361,8 +364,11 @@
 
       /* 新增：優化手機版卡片與留言區、互動按鈕 */
       #mobile-container .card-wrapper {
-        margin-bottom: 16px;
+        display: block;
         width: 100%;
+        padding: 0;
+        margin: 0;
+        margin-bottom: 24px;
       }
 
       #mobile-container .stamp-card {
