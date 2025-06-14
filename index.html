@@ -3,23 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>翻頁動畫</title>
-  <link rel="stylesheet" href="style.css?v=20240612">
-  <style>
-    body {
-      margin: 0;
-      background: #222;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    /* 確保手機頁面可自由捲動 */
-    html, body {
-      height: auto;
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
+  <style>
+   body {
+  margin: 0;
+  background: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow-x: hidden; /* 防止手機出現橫向滾動 */
+}
+
 
     .book {
       position: relative;
@@ -32,19 +28,6 @@
       overflow: hidden;
       gap: 0px;
       margin: 0 auto;
-    }
-    .book::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 0;
-      transform: translateX(-50%);
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(to right, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15));
-      z-index: 5;
-      pointer-events: none;
-      filter: blur(1px);
     }
 
     .page.left,
@@ -71,7 +54,11 @@
       /* 左頁在右側產生向內漸層陰影，右頁在左側產生向內漸層陰影 */
     }
 
-    
+    .page.left {
+    }
+    .page.right {
+    }
+
     .left, .right {
       padding: 20px;
       background-size: cover;
@@ -98,81 +85,89 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
+      overflow: visible;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
     .like-container {
       margin-top: 4px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: flex-start;
       align-items: center;
       gap: 6px;
       font-size: 12px;
       font-weight: bold;
       color: #444;
       width: 100%;
-      padding-right: 8px;
+      padding-left: 8px;
     }
 
     .message-box {
-      display: block;
-      background: none;
-      border: none;
-      box-shadow: none;
       margin-top: 8px;
-      max-height: 180px;
+      padding: 6px 10px;
+      background-color: rgba(255, 255, 255, 0.6);
+      border-radius: 8px;
+      max-height: 32px;
       overflow-y: auto;
       font-size: 12px;
       line-height: 1.4;
-      overflow-x: auto;
-      min-height: 100px;
-      margin-left: auto;
-      margin-right: auto;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      white-space: normal;
+      word-break: break-word;
+      position: relative;
+    }
+    .message-box::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      right: 10px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid rgba(255, 255, 255, 0.6);
+      transform: rotate(20deg);
     }
 
     .message-box p {
-      display: block;
       margin: 4px 0;
+      display: inline;
       margin-right: 12px;
-      font-family: "黑體-繁", "Microsoft JhengHei", sans-serif !important;
     }
 
     .message-input-area {
-      margin-top: 0px;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: flex-end;
-    }
+  margin-top: 2px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 
     .message-input-area textarea {
       resize: none;
-      height: 28px;
+      height: 20px;
       padding: 5px;
-      border: none;
-      background: none;
-      outline: none;
+      border: none !important;
+      background: none !important;
+      box-shadow: none !important;
+      outline: none !important;
       font-size: 12px;
       font-family: 'Courier New', monospace;
       color: #222;
-      box-shadow: none;
-      text-align: left;
-      line-height: 1.2;
-      overflow-y: hidden;
-      flex: 1;
     }
 
     .message-input-area button {
-      margin-left: 8px;
-      margin-top: 0;
+      margin-top: 0px;
       padding: 4px 10px;
-      background-color: gray;
+      border: 1px solid #ccc;
+      background-color: #ccc;
+      box-shadow: none !important;
       color: white;
-      border: none;
       border-radius: 6px;
       font-size: 12px;
       cursor: pointer;
-      flex-shrink: 0;
     }
 
     .message-input-area button:hover {
@@ -228,7 +223,7 @@
       cursor: pointer;
       font-size: 18px;
       font-weight: bold;
-      color: #de5419;
+      color: black;
       border-radius: 8px;
       user-select: none;
       z-index: 10;
@@ -240,7 +235,7 @@
       background: rgba(255, 255, 255, 1);
     }
 
-    .btn.left-btn {
+    .left-btn {
       position: absolute;
       left: 25%;
       bottom: 40px;
@@ -258,7 +253,7 @@
       gap: 4px;
     }
 
-    .btn.right-btn {
+    .right-btn {
       position: absolute;
       left: 75%;
       bottom: 40px;
@@ -280,7 +275,6 @@
     .right-btn .arrow {
       font-size: 18px;
       line-height: 1;
-      color: #de5419;
     }
     .headline {
       position: absolute;
@@ -334,13 +328,138 @@
       pointer-events: none;
     }
 
-    @media (min-width: 769px) {
-      .book {
-        display: flex;
-      }
+    @media (max-width: 1024px) {
+  body {
+    display: block;
+    height: auto;
+    background: url('phone.jpg') no-repeat center center fixed;
+    background-size: cover;
+    overflow-x: hidden;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .book {
+    display: none;
+  }
+
+  #mobile-container {
+    display: block;
+  }
+
+  /* 手機：單欄排版，略縮小卡片 */
+@media (max-width: 767px) {
+  .grid-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 32px;
+    padding: 24px 12px;
+    width: calc(100% - 24px);
+  }
+
+  .stamp-card {
+    width: 95%;
+    max-width: 360px;
+    border-radius: 10px;
+    padding: 8px;
+  }
+
+  .message-input-area {
+    width: 100%;
+    padding: 0 8px;
+  }
+
+  .message-input-area textarea {
+    width: 100%;
+    font-size: 14px;
+  }
+}
+
+/* 平板：兩欄排版 */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+
+  .stamp-card {
+    width: 100%;
+    max-width: unset;
+    border-radius: 12px;
+    padding: 10px;
+  }
+
+  .message-input-area {
+    width: 100%;
+    padding: 0;
+  }
+
+  .message-input-area textarea {
+    width: 100%;
+    font-size: 14px;
+  }
+}
+
+
+      .page.left,
+      .page.right,
       #mobile-container {
-        display: none;
+        width: 100%;
+        padding: 0;
+        background: none;
       }
+
+      .grid-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 12px;
+        padding: 24px 16px;
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .stamp-card {
+        width: 90%;
+        max-width: 300px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .stamped {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 0;
+      }
+
+      .like-container {
+        justify-content: flex-start;
+        padding-left: 12px;
+      }
+
+      .corner-icon,
+      .center-bottom-icon,
+      .logo-stamped,
+      .headline {
+        display: none !important;
+      }
+
+    }
+    @media (min-width: 1025px) {
+  .book {
+    display: flex;
+  }
+  #mobile-container {
+    display: none;
+  }
+
     }
 
     /* 隱藏所有 checkbox 元件 */
@@ -350,6 +469,176 @@
     .card-wrapper > div:empty {
   display: none !important;
 }
+
+.comment-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 9999;
+}
+
+.comment-overlay {
+  position: absolute;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.comment-box {
+  position: relative;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  width: 90%;
+  max-width: 360px;
+  max-height: 80vh;
+  max-height: 400px;
+  padding: 16px;
+  border-radius: 10px;
+  overflow-y: auto;
+  overflow-x: visible;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  font-size: 14px;
+  line-height: 1.5;
+  z-index: 10001;
+}
+
+/* Triangle at bottom left of comment box */
+.comment-box::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  right: 24px;
+  left: auto;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid white;
+  z-index: 10001;
+}
+
+.comment-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+}
+
+.comment-box p {
+  margin: 8px 0;
+  font-family: "黑體-繁", sans-serif;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+
+.image-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 9998;
+}
+
+.image-overlay {
+  position: absolute;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  cursor: zoom-out;
+}
+
+.image-modal-content {
+  position: absolute;
+  max-width: 80%;
+  max-height: 75vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  object-fit: contain;
+}
+
+
+  
+
+    /* 更小、更淡化的顯示留言按鈕 */
+    .show-comments-btn {
+      font-size: 10px;
+      padding: 2px 8px;
+      background: none !important;
+      border: none !important;
+      color: #aaa !important;
+      cursor: pointer;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+  </style>
+
+  <!-- 新增優先套用的留言彈窗樣式 -->
+  <style>
+  .comment-modal, .comment-overlay {
+    overflow: visible !important;
+  }
+
+  .comment-overlay {
+    z-index: 10000 !important;
+  }
+
+  .comment-box {
+    position: relative;
+    z-index: 10001 !important;
+    overflow: visible;
+  }
+
+  .comment-box::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    right: 24px;
+    left: auto;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white;
+    z-index: 10002;
+  }
+  </style>
+
+  <style>
+  .mobile-logo {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .mobile-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 32px 0 24px;
+      margin-bottom: 16px;
+    }
+
+    .mobile-logo img {
+      height: 32px;
+      max-width: 80%;
+    }
+    .grid-container {
+      margin-top: 16px;
+    }
+  }
   </style>
   
   <!-- Firebase SDK -->
@@ -374,6 +663,7 @@
 
     // 使用 onSnapshot 監聽 Firestore 資料變動，確保圖片新增時自動更新
     document.addEventListener("DOMContentLoaded", () => {
+
       db.collection("images").onSnapshot(snapshot => {
         imageUrls = snapshot.docs
           .map(doc => doc.data().url)
@@ -383,6 +673,65 @@
       });
     });
 
+let currentZoomedImage = null;
+
+function openImageModal(url) {
+  const modal = document.getElementById("image-modal");
+  const img = document.getElementById("image-modal-img");
+
+  if (modal.style.display === "block" && img.src === url) {
+    closeImageModal();
+    return;
+  }
+
+  img.src = url;
+  modal.style.display = "block";
+  currentZoomedImage = url;
+}
+
+function closeImageModal() {
+  document.getElementById("image-modal").style.display = "none";
+  currentZoomedImage = null;
+}
+
+
+    function openCommentModal(stampId) {
+      const modal = document.getElementById("comment-modal");
+      const content = document.getElementById("comment-modal-content");
+      modal.style.display = "block";
+      // Always start with the "留言區" title
+      content.innerHTML = "<h3 style='font-size: 16px; font-weight: bold; margin-top: 0; font-family: &quot;黑體-繁&quot;, sans-serif;'>留言區</h3><p style='font-family: &quot;黑體-繁&quot;, sans-serif;'>載入中...</p>";
+
+      db.collection("messages")
+        .where("stampId", "==", stampId)
+        .orderBy("timestamp", "asc")
+        .get()
+        .then(snapshot => {
+          // Always include 標題 at top
+          let html = "<h3 style='font-size: 16px; font-weight: bold; margin-top: 0; font-family: &quot;黑體-繁&quot;, sans-serif;'>留言區</h3>";
+          if (snapshot.empty) {
+            html += "<p style='font-family: &quot;黑體-繁&quot;, sans-serif;'>目前沒有留言</p>";
+            content.innerHTML = html;
+            return;
+          }
+          content.innerHTML = html;
+          snapshot.forEach(doc => {
+            const p = document.createElement("p");
+            p.textContent = doc.data().content;
+            content.appendChild(p);
+          });
+        })
+        .catch(err => {
+          // Always include 標題 at top even on error
+          content.innerHTML = "<h3 style='font-size: 16px; font-weight: bold; margin-top: 0; font-family: &quot;黑體-繁&quot;, sans-serif;'>留言區</h3><p style='font-family: &quot;黑體-繁&quot;, sans-serif;'>讀取留言失敗：" + err.message + "</p>";
+        });
+    }
+
+function closeCommentModal() {
+  document.getElementById("comment-modal").style.display = "none";
+}
+
+
     function createCard(imageUrl) {
       const card = document.createElement("div");
       card.className = "stamp-card";
@@ -391,63 +740,15 @@
         img.src = imageUrl;
         img.alt = "stamp";
         img.className = "stamped";
-        // 新增：圖片點擊放大功能
-        img.style.cursor = "pointer";
+        img.style.cursor = "zoom-in";
         img.addEventListener("click", () => {
-          const existing = document.getElementById("popup-image-modal");
-          if (existing) {
-            existing.remove();
-            const existingOverlay = document.getElementById("popup-overlay");
-            if (existingOverlay) existingOverlay.remove();
-            return;
+          if (currentZoomedImage === imageUrl) {
+            closeImageModal();
+          } else {
+            openImageModal(imageUrl);
           }
-
-          // 新增背景遮罩
-          const overlay = document.createElement("div");
-          overlay.id = "popup-overlay";
-          overlay.style.position = "fixed";
-          overlay.style.top = "0";
-          overlay.style.left = "0";
-          overlay.style.width = "100%";
-          overlay.style.height = "100%";
-          overlay.style.background = "rgba(0, 0, 0, 0.4)";
-          overlay.style.zIndex = "999";
-          overlay.addEventListener("click", () => {
-            modal.remove();
-            overlay.remove();
-          });
-          document.body.appendChild(overlay);
-
-          const modal = document.createElement("div");
-          modal.id = "popup-image-modal";
-          modal.style.position = "absolute";
-          modal.style.top = "50%";
-          modal.style.left = "50%";
-          modal.style.transform = "translate(-50%, -50%)";
-          // 修改：確保背景透明，無邊框與陰影
-          modal.style.background = "transparent";
-          modal.style.border = "none";
-          modal.style.boxShadow = "none";
-          modal.style.borderRadius = "0";
-          modal.style.padding = "0";
-          modal.style.zIndex = "1000";
-
-          const fullImg = document.createElement("img");
-          fullImg.src = imageUrl;
-          fullImg.style.maxWidth = "98%";
-          fullImg.style.maxHeight = "98%";
-          fullImg.style.borderRadius = "0";
-          fullImg.style.boxShadow = "none";
-          fullImg.style.objectFit = "contain";
-
-          modal.appendChild(fullImg);
-          modal.addEventListener("click", () => {
-            modal.remove();
-            overlay.remove();
-          });
-
-          document.body.appendChild(modal);
         });
+
         card.appendChild(img);
       }
       return card;
@@ -479,8 +780,10 @@
       });
 
       likeBtn.addEventListener("click", () => {
+        let interactions = parseInt(localStorage.getItem("interactions")) || 0;
+localStorage.setItem("interactions", interactions + 1);
         const newCount = parseInt(likeCount.textContent) + 1;
-        likeCount.textContent = newCount;
+      likeCount.textContent = newCount;
         db.collection("likes").doc(encodeURIComponent(imageUrl)).set({ count: newCount });
       });
 
@@ -490,169 +793,42 @@
       wrapper.appendChild(card);
       wrapper.appendChild(likeContainer);
       // 清除空白區塊（常見是無用的圓角白框）
-      Array.from(wrapper.querySelectorAll('div')).forEach(el => {
-        if (
-          el.children.length === 0 &&
-          el.textContent.trim() === "" &&
-          getComputedStyle(el).backgroundColor === 'rgba(255, 255, 255, 0.6)'
-        ) {
-          el.remove();
-        }
-      });
-      // 更嚴格地移除未知的浮動 div（白色圓角或高度 28px）
-      Array.from(wrapper.querySelectorAll('div')).forEach(el => {
-        const style = getComputedStyle(el);
-        if (
-          el.children.length === 0 &&
-          el.textContent.trim() === "" &&
-          (style.backgroundColor === 'rgba(255, 255, 255, 0.6)' || style.borderRadius === '100px' || style.height === '28px')
-        ) {
-          el.remove();
-        }
-      });
+Array.from(wrapper.querySelectorAll('div')).forEach(el => {
+  if (
+    el.children.length === 0 &&
+    el.textContent.trim() === "" &&
+    getComputedStyle(el).backgroundColor === 'rgba(255, 255, 255, 0.6)'
+  ) {
+    el.remove();
+  }
+});
 
       // ======= 插入留言區域 =======
-      // 建立透明展開按鈕
-      const overlayToggle = document.createElement("button");
-      overlayToggle.textContent = "展開留言";
-      overlayToggle.style.background = "none";
-      overlayToggle.style.border = "none";
-      overlayToggle.style.color = "#888";
-      overlayToggle.style.cursor = "pointer";
-      overlayToggle.style.fontSize = "12px";
-      overlayToggle.style.marginTop = "6px";
-      overlayToggle.style.alignSelf = "center";
-      overlayToggle.style.padding = "0";
-      overlayToggle.style.textDecoration = "none";
-      // 新增：加上 data-url 屬性
-      overlayToggle.setAttribute("data-url", encodeURIComponent(imageUrl));
-
-      // 展開留言按鈕只會開啟 popup，不再展開卡片下方留言
-      overlayToggle.addEventListener("click", () => {
-        const existing = document.getElementById("message-overlay");
-        if (existing) existing.remove();
-
-        const overlay = document.createElement("div");
-        overlay.id = "message-overlay";
-        overlay.style.position = "fixed";
-        overlay.style.top = "0";
-        overlay.style.left = "0";
-        overlay.style.width = "100vw";
-        overlay.style.height = "100vh";
-        overlay.style.background = "rgba(0,0,0,0.6)";
-        overlay.style.zIndex = "999";
-        overlay.addEventListener("click", () => overlay.remove());
-
-        const popup = document.createElement("div");
-        // 強制留言區置中
-        popup.style.position = "absolute";
-        popup.style.left = "50%";
-        popup.style.top = "50%";
-        popup.style.transform = "translate(-50%, -50%)";
-        // 移除干擾定位的 right/bottom/margin
-        // popup.style.right = ""; // 不設
-        // popup.style.bottom = ""; // 不設
-        // popup.style.marginLeft = ""; // 不設
-        // popup.style.marginRight = ""; // 不設
-        popup.style.margin = "0 auto";
-        popup.style.background = "white";
-        popup.style.borderRadius = "8px";
-        popup.style.padding = "20px";
-        popup.style.width = "35%";
-        popup.style.maxWidth = "600px";
-        popup.style.boxShadow = "0 4px 20px rgba(0,0,0,0.3)";
-        popup.style.maxHeight = "none";
-        // 供三角形定位
-        popup.style.position = "absolute";
-        popup.addEventListener("click", e => e.stopPropagation());
-
-        // 在 popup 下方右側加入白色三角形尖角（右傾斜）
-        const triangle = document.createElement("div");
-        triangle.style.position = "absolute";
-        triangle.style.width = "0";
-        triangle.style.height = "0";
-        triangle.style.borderRight = "14px solid white";
-        triangle.style.borderTop = "14px solid transparent";
-        triangle.style.borderBottom = "14px solid transparent";
-        triangle.style.borderLeft = "none";
-        triangle.style.right = "12px"; // 可以微調位置
-        triangle.style.bottom = "-14px";
-        popup.appendChild(triangle);
-
-        // 新增「留言區」標題
-        const messageTitle = document.createElement("div");
-        messageTitle.textContent = "留言區";
-        messageTitle.style.fontWeight = "bold";
-        messageTitle.style.fontSize = "16px";
-        messageTitle.style.marginBottom = "12px";
-        messageTitle.style.fontFamily = '"黑體-繁", "Microsoft JhengHei", sans-serif';
-        popup.appendChild(messageTitle);
-
-        // 建立留言顯示區塊
-        const popupMessages = document.createElement("div");
-        popupMessages.className = "message-box";
-        popupMessages.style.display = "block";
-        popupMessages.style.whiteSpace = "normal";
-        popupMessages.style.marginLeft = "auto";
-        popupMessages.style.marginRight = "auto";
-
-        // 載入 Firestore 的留言並顯示
-        db.collection("messages")
-          .where("stampId", "==", encodeURIComponent(imageUrl))
-          .orderBy("timestamp", "asc")
-          .get()
-          .then(snapshot => {
-            snapshot.forEach(doc => {
-              const data = doc.data();
-              const p = document.createElement("p");
-              p.textContent = data.content;
-              p.style.margin = "4px 0";
-              p.style.fontFamily = '"黑體-繁", "Microsoft JhengHei", sans-serif';
-              popupMessages.appendChild(p);
-            });
-          });
-
-        popup.appendChild(popupMessages);
-        overlay.appendChild(popup);
-        document.body.appendChild(overlay);
-      });
-
-      // 只保留 textarea 與送出按鈕在卡片下方
+      // 保留較新的 .message-box 與留言欄設計，並確保 Firestore 互動與留言功能
+    
       const messageInputArea = document.createElement("div");
       messageInputArea.className = "message-input-area";
-      messageInputArea.style.flexDirection = "row";
-      messageInputArea.style.justifyContent = "flex-end";
-      messageInputArea.style.alignItems = "flex-end";
-      messageInputArea.style.width = "100%";
-
-      // 留言框
-      const textarea = document.createElement("textarea");
-      textarea.id = `message-input-${encodeURIComponent(imageUrl)}`;
-      textarea.placeholder = "寫下你的留言...";
-
-      // 送出按鈕
-      const sendBtn = document.createElement("button");
-      sendBtn.textContent = "送出";
-      sendBtn.onclick = () => sendMessage(encodeURIComponent(imageUrl));
-      sendBtn.style.backgroundColor = "gray";
-      sendBtn.style.color = "white";
-      sendBtn.style.borderRadius = "6px";
-      sendBtn.style.fontSize = "12px";
-      sendBtn.style.padding = "4px 10px";
-      sendBtn.style.marginLeft = "8px";
-      sendBtn.style.cursor = "pointer";
-      sendBtn.onmouseover = () => sendBtn.style.backgroundColor = "#666";
-      sendBtn.onmouseout = () => sendBtn.style.backgroundColor = "gray";
-
-      // 插入順序：textarea（上），送出按鈕在右
-      messageInputArea.appendChild(textarea);
-      messageInputArea.appendChild(sendBtn);
+      messageInputArea.innerHTML = `
+  <div style="display: flex; width: 100%; align-items: flex-start; gap: 8px;">
+    <textarea id="message-input-${encodeURIComponent(imageUrl)}" placeholder="寫下你的留言..." style="flex: 1; border-radius: 6px; background: transparent; border: none;"></textarea>
+    <button onclick="sendMessage('${encodeURIComponent(imageUrl)}')" style="margin-top: 0;">送出</button>
+  </div>
+  <div style="margin-top: 6px; width: 100%; display: flex; justify-content: flex-end;">
+    <button class="show-comments-btn" onclick="openCommentModal('${encodeURIComponent(imageUrl)}')">顯示所有留言</button>
+  </div>
+`;
       wrapper.appendChild(messageInputArea);
 
-      // 展開留言按鈕獨立顯示於下方（不再在 buttonRow）
-      wrapper.appendChild(overlayToggle);
 
-      // 不再自動載入留言顯示在卡片下方
+
+
+
+const expandedCommentList = document.createElement("div");
+expandedCommentList.className = "expanded-comments";
+expandedCommentList.id = `expanded-comments-${encodeURIComponent(imageUrl)}`;
+wrapper.appendChild(expandedCommentList);
+
+      loadMessages(encodeURIComponent(imageUrl));
       // ===========================
 
       // 移除 wrapper 內所有 input[type="checkbox"]（若有被動態加入）
@@ -750,8 +926,7 @@
     }
     // ====== 留言功能 ======
     async function sendMessage(stampId) {
-      const input = document.querySelector(`#message-input-${encodeURIComponent(stampId)}`);
-      console.log("抓到的輸入框是：", input);
+      const input = document.querySelector(`#message-input-${CSS.escape(stampId)}`);
       const message = input ? input.value.trim() : "";
       if (message === "") return;
       console.log("即將送出留言：", message);
@@ -767,19 +942,7 @@
           input.blur();
           input.value = "";
         }
-        // 新增：留言送出後關閉原 popup 並自動重新展開留言刷新
-        const overlay = document.getElementById("message-overlay");
-        if (overlay) {
-          overlay.remove(); // 關閉原本的 popup
-          const reopenBtn = document.querySelector(`[data-url="${stampId}"]`);
-          if (reopenBtn) {
-            setTimeout(() => {
-              reopenBtn.click();
-            }, 300); // 延遲 300ms 確保資料已寫入並可讀取
-          }
-        }
-        // 不再立即將新留言顯示在主頁面卡片下方的留言區
-        // 不再呼叫 loadMessages(stampId);
+        
       } catch (err) {
         console.error("送出留言失敗：", err);
         alert("送出留言失敗：" + err.message);
@@ -803,19 +966,55 @@
           const data = doc.data();
           const p = document.createElement("p");
           p.textContent = data.content;
-          p.style.background = "none";
-          p.style.padding = "0";
           container.appendChild(p);
         });
       } catch (err) {
         console.error("載入留言失敗：", err);
       }
+
+      async function toggleExpandedComments(stampId) {
+    const panel = document.getElementById("expanded-comments-" + stampId);
+    if (!panel) return;
+
+    if (panel.style.display === "none" || panel.style.display === "") {
+      panel.style.display = "block";
+      panel.innerHTML = "<p>載入中...</p>";
+      try {
+        const snapshot = await db.collection("messages")
+          .where("stampId", "==", stampId)
+          .orderBy("timestamp", "asc")
+          .get();
+
+        if (snapshot.empty) {
+          panel.innerHTML = "<p>目前沒有留言</p>";
+          return;
+        }
+
+        panel.innerHTML = "";
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const p = document.createElement("p");
+          p.textContent = data.content;
+          panel.appendChild(p);
+        });
+      } catch (err) {
+        panel.innerHTML = `<p>讀取失敗：${err.message}</p>`;
+      }
+    } else {
+      panel.style.display = "none";
+    }
+  }
     }
     // ======================
   </script>
 </head>
 <body>
-  <audio id="bg-music" src="Tokyo Music Walker - Gentle Midnight - Tokyo Music Walker.mp3" autoplay loop></audio>
+
+  <div class="mobile-logo">
+    <img src="logo-stamped2.png" alt="Mobile Logo">
+  </div>
+
+</div>
   <div class="book">
     <div class="page left"></div>
     <div class="page right" id="rightPage"></div>
@@ -829,16 +1028,27 @@
     </button>
   </div>
   <div id="mobile-container" class="page"></div>
+
+  <!-- 留言彈窗 -->
+<div id="comment-modal" class="comment-modal">
+  <div class="comment-overlay" onclick="closeCommentModal()"></div>
+  <div class="comment-box">
+    <span class="comment-close" onclick="closeCommentModal()">×</span>
+    <div id="comment-modal-content">
+      <p>載入中...</p>
+    </div>
+  </div>
+</div>
+
+<!-- 放大圖片彈窗 -->
+<div id="image-modal" class="image-modal">
+  <div class="image-overlay" onclick="closeImageModal()"></div>
+  <img id="image-modal-img" class="image-modal-content" src="" alt="放大圖">
+</div>
+
+
+</audio>
 </body>
-<script src="script.js?v=20240612"></script>
-<script>
-  document.addEventListener('click', () => {
-    const music = document.getElementById('bg-music');
-    if (music && music.paused) {
-      music.play().catch(e => {
-        console.log('音樂播放失敗：', e);
-      });
-    }
-  }, { once: true });
-</script>
 </html>
+</body>
+<audio id="bg-music" src="Tokyo Music Walker - First Snow.mp3" autoplay loop preload="auto"></audio>
