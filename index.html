@@ -362,9 +362,22 @@
     padding: 8px;
   }
 
+  .like-container {
+    max-width: 92%;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 0;
+  }
+
   .message-input-area {
     width: 100%;
-    padding: 0 8px;
+    padding: 0;
+    margin: 0 auto 16px auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .message-input-area textarea {
@@ -806,7 +819,7 @@ Array.from(wrapper.querySelectorAll('div')).forEach(el => {
       const messageInputArea = document.createElement("div");
       messageInputArea.className = "message-input-area";
       messageInputArea.innerHTML = `
-  <div style="display: flex; width: 100%; align-items: flex-start; gap: 8px;">
+  <div style="display: flex; width: 92%; align-items: flex-start; gap: 8px;">
     <textarea id="message-input-${encodeURIComponent(imageUrl)}" placeholder="寫下你的留言..." style="flex: 1; border-radius: 6px; background: transparent; border: none;"></textarea>
     <button onclick="sendMessage('${encodeURIComponent(imageUrl)}')" style="margin-top: 0;">送出</button>
   </div>
