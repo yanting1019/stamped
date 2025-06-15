@@ -826,7 +826,7 @@ Array.from(wrapper.querySelectorAll('div')).forEach(el => {
     <textarea id="message-input-${encodeURIComponent(imageUrl)}" placeholder="寫下你的留言..." style="flex: 1; border-radius: 6px; background: transparent; border: none;"></textarea>
     <button onclick="sendMessage('${encodeURIComponent(imageUrl)}')" style="margin-top: 0;">送出</button>
   </div>
-  <div style="margin-top: 6px; width: 100%; display: flex; justify-content: flex-end;">
+  <div style="margin-top: 6px; width: 100%; display: flex; justify-content: flex-end; padding: 0 16px; box-sizing: border-box;">
     <button class="show-comments-btn" onclick="openCommentModal('${encodeURIComponent(imageUrl)}')">顯示所有留言</button>
   </div>
 `;
