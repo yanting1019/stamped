@@ -785,15 +785,6 @@ function closeCommentModal() {
       wrapper.style.display = "flex";
       wrapper.style.flexDirection = "column";
       wrapper.style.alignItems = "center";
-      // 插入 ped2.png（第一張圖片除外）
-      if (imageUrls.indexOf(imageUrl) !== 0) {
-        const pedImg = document.createElement("img");
-        pedImg.src = "ped2.png";
-        pedImg.alt = "ped2";
-        pedImg.style.width = "48px";
-        pedImg.style.marginBottom = "32px";
-        wrapper.appendChild(pedImg);
-      }
 
       const likeContainer = document.createElement("div");
       likeContainer.className = "like-container";
