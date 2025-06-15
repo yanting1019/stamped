@@ -676,6 +676,18 @@ img {
 
     // 使用 onSnapshot 監聽 Firestore 資料變動，確保圖片新增時自動更新
     document.addEventListener("DOMContentLoaded", () => {
+      // ======= 播放背景音樂邏輯（於 Firestore 初始化前） =======
+      const bgm = document.getElementById("bg-music");
+      function tryPlayMusic() {
+        bgm.play().catch(() => {
+          console.log("尚未互動，無法播放背景音樂");
+        });
+        document.removeEventListener("click", tryPlayMusic);
+        document.removeEventListener("touchstart", tryPlayMusic);
+      }
+      document.addEventListener("click", tryPlayMusic);
+      document.addEventListener("touchstart", tryPlayMusic);
+      // ======= End 播放背景音樂邏輯 =======
 
       db.collection("images").onSnapshot(snapshot => {
         imageUrls = snapshot.docs
