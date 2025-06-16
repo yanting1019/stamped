@@ -6,28 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-   body {
-  margin: 0;
-  background: #222;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow-x: hidden; /* 防止手機出現橫向滾動 */
-}
+  body {
+    margin: 0;
+    padding: 0;
+    background: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden; /* 防止手機出現橫向滾動 */
+  }
 
 
     .book {
       position: relative;
       display: flex;
-      width: 960px;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
       min-width: unset;
       max-width: unset;
-      height: 600px;
       perspective: 2000px;
       overflow: hidden;
       gap: 0px;
-      margin: 0 auto;
     }
 
     .page.left,
@@ -73,8 +75,8 @@
     }
 
     .stamp-card {
-      width: 90%;
-      max-width: 300px;
+      width: 95%;
+      max-width: 360px;
       height: 100%;
       background: rgba(255, 255, 255, 0.5);
       border-radius: 12px;
@@ -241,7 +243,7 @@
       border: none;
       color: #de5419;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 16px;
       border-radius: 0;
       padding: 0;
       display: flex;
@@ -259,7 +261,7 @@
       border: none;
       color: #de5419;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 16px;
       border-radius: 0;
       padding: 0;
       display: flex;
@@ -270,14 +272,16 @@
 
     .left-btn .arrow,
     .right-btn .arrow {
-      font-size: 18px;
+      font-size: 24px;
       line-height: 1;
     }
     .headline {
       position: absolute;
       top: 24px;
       left: 12px;
-      font-size: 7px;
+      right: 12px;
+      width: calc(100% - 24px);
+      font-size: 12px;
       font-weight: bold;
       font-family: "Arial", "Helvetica", "黑體-繁", sans-serif;
       color: black;
@@ -287,24 +291,25 @@
       white-space: nowrap;
       display: flex;
       align-items: center;
+      justify-content: space-between;
     }
     .headline-icon {
-      height: 14px;
+      height: 20px;
       vertical-align: baseline;
       display: inline-block;
     }
     .headline-icon.right {
-      height: 10px;
-      margin-left: 16px;
+      height: 16px;
+      margin-left: 12px;
     }
     .headline-icon.left {
-      height: 20px;
+      height: 45px;
     }
     .corner-icon {
       position: absolute;
       bottom: 40px;
       left: 40px;
-      height: 52px;
+      height: 64px;
       z-index: 10;
       pointer-events: none;
     }
@@ -312,7 +317,7 @@
       position: absolute;
       bottom: 40px;
       left: 40px;
-      height: 28px;
+      height: 40px;
       z-index: 10;
       pointer-events: none;
     }
@@ -320,7 +325,7 @@
       position: absolute;
       bottom: 40px;
       right: 40px;
-      height: 22px;
+      height: 32px;
       z-index: 10;
       pointer-events: none;
     }
