@@ -888,6 +888,19 @@ wrapper.appendChild(expandedCommentList);
     }
 
     function updatePage() {
+      // 手機裝置優先 return，避免重複建立卡片
+      if (window.innerWidth <= 768) {
+        const mobileContainer = document.getElementById("mobile-container");
+        if (mobileContainer) {
+          mobileContainer.innerHTML = "";
+          imageUrls.forEach(url => {
+            const wrapped = wrapCardWithLike(createCard(url), url);
+            mobileContainer.appendChild(wrapped);
+          });
+        }
+        return; // 手機版不執行左右頁建立
+      }
+
       const left = document.querySelector(".page.left");
       const right = document.querySelector(".page.right");
 
@@ -948,16 +961,6 @@ wrapper.appendChild(expandedCommentList);
       logo.src = "logo-stamped.png";
       logo.className = "logo-stamped";
       right.appendChild(logo);
-
-      // 額外為手機產生全部卡片
-      const mobileContainer = document.getElementById("mobile-container");
-      if (window.innerWidth <= 768 && mobileContainer) {
-        mobileContainer.innerHTML = "";
-        imageUrls.forEach(url => {
-          const wrapped = wrapCardWithLike(createCard(url), url);
-          mobileContainer.appendChild(wrapped);
-        });
-      }
     }
 
     function flipNext() {
